@@ -1,0 +1,26 @@
+{
+  "name": "arbiter",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "validate": "grunt jshint"
+  },
+  "pre-commit": [
+    "validate"
+  ],
+  "author": "BuboBox",
+  "dependencies": {
+    "eventemitter2": "~0.4.14",
+    "wingman": "Gertt/wingman#0.1.1"
+  },
+  "devDependencies": {
+    "almond": "latest",
+    "grunt": ">=0.4.0",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-watch": "0.2.0",
+    "grunt-requirejs": "^0.4.2",
+    "matchdep": "latest",
+    "pre-commit": "0.0.11"
+  }
+}
