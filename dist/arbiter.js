@@ -2116,8 +2116,8 @@ define('wingman',[
 
         options = options || {};
 
-        var title = options.title || '';
-        delete options.title;
+        var target = options.target || '_blank';
+        delete options.target;
 
         var attributes = [];
         for (var prop in options) { if (options.hasOwnProperty(prop)) {
@@ -2126,7 +2126,7 @@ define('wingman',[
         }
         attributes = attributes.join(', ');
 
-        return window.open(url, title, attributes);
+        return window.open(url, target, attributes);
 	};
 
 	window.Wingman = Wingman;
@@ -2178,7 +2178,7 @@ define('services/ajax/client',[], function () {
 		this._target = options.arbiter._options.remoteName;
 		this._transport = options.arbiter.transport;
 		
-		this._callbackId = (new Date).getTime() + Math.floor(Math.random() * 10000);
+		this._callbackId = (new Date()).getTime() + Math.floor(Math.random() * 10000);
 		this._callbacks = {};
 
 		this._transport.subscribe(this._target, AjaxClient.EVENTS.RESPONSE, function () { self._receive.apply(self, arguments); });
@@ -2259,7 +2259,7 @@ define('services/ajax/server',[], function () {
 				success: true,
 				id: requestId,
 				data: response
-			})
+			});
 
 		}, function (response) {
 
@@ -2267,7 +2267,7 @@ define('services/ajax/server',[], function () {
 				success: false,
 				id: requestId,
 				data: response
-			})
+			});
 
 		});
 	};
@@ -2276,13 +2276,13 @@ define('services/ajax/server',[], function () {
 
 		var method = options.method || 'GET',
 			url = options.url || null,
-			headers = options.headers || {};
+			headers = options.headers || {},
 			data = options.data || {};
 
 		if (!url) {
 			return error({ message: 'No URL provided' });
 		} else if (method === 'GET') {
-			for(idx in data) {
+			for(var idx in data) {
 				url += (url.indexOf('?') > -1 ? '&' : '?');
 				url += idx + '=' + encodeURIComponent(data[idx]);
 			}
@@ -2331,7 +2331,7 @@ define('services/oauth/client',[], function () {
 		this._targetLocation = this._transport.middlemanLocation;
 		this._endpoint = options.endpoint;
 		
-		this._callbackId = (new Date).getTime() + Math.floor(Math.random() * 10000);
+		this._callbackId = (new Date()).getTime() + Math.floor(Math.random() * 10000);
 		this._callbacks = {};
 
 		this._transport.subscribe(this._target, OAuthClient.EVENTS.RESPONSE, function () { self._receive.apply(self, arguments); });
@@ -2375,7 +2375,7 @@ define('services/oauth/client',[], function () {
 
 	OAuthClient.prototype._getWindowOptions = function(network) {
 		return {
-			title: network + ' connect',
+			title: '_blank',
 			width: 400,
 			height: 400
 		};
@@ -2556,14 +2556,14 @@ define('arbiter',[
 		if (OAuthPopup) this.OAuth.Popup = this.serviceFactory(OAuthPopup);
 	};
 
-	Arbiter.prototype.serviceFactory = function(service) {
+	Arbiter.prototype.serviceFactory = function(Service) {
 		var self = this;
 
 		return function (options) {
 			options = options || {};
 			options.arbiter = options.arbiter || self;
 
-			return new service(options);
+			return new Service(options);
 		};
 	};
 
