@@ -55,7 +55,7 @@ define([], function () {
 
 	OAuthClient.prototype._getWindowOptions = function(network) {
 		return {
-			title: network + ' connect',
+			title: '_blank',
 			width: 400,
 			height: 400
 		};
